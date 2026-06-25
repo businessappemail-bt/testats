@@ -1,200 +1,1371 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Test ATS</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:Arial,Helvetica,sans-serif;
-        }
+  <title>Test ATS | Dashboard</title>
 
-        body{
-            background:#f3f3f3;
-        }
+  <style>
+    :root {
+      --black: #0f0f10;
+      --black-2: #171717;
+      --charcoal: #232323;
+      --gray-900: #2f2f31;
+      --gray-800: #3f3f42;
+      --gray-700: #57575b;
+      --gray-600: #6f6f75;
+      --gray-500: #8a8a91;
+      --gray-400: #b8b8bf;
+      --gray-300: #d9d9df;
+      --gray-200: #ececf0;
+      --gray-100: #f6f6f8;
+      --white: #ffffff;
+      --success: #16803c;
+      --warning: #a87400;
+      --danger: #b42318;
+      --info: #2458a6;
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --shadow-sm: 0 8px 22px rgba(15, 15, 16, 0.06);
+      --shadow-md: 0 18px 50px rgba(15, 15, 16, 0.08);
+      --border: 1px solid var(--gray-200);
+      --sidebar-width: 284px;
+      --topbar-height: 74px;
+    }
 
-        .sidebar{
-            position:fixed;
-            left:0;
-            top:0;
-            width:260px;
-            height:100vh;
-            background:#111;
-            color:#fff;
-            padding:30px;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .logo{
-            font-size:28px;
-            font-weight:bold;
-            margin-bottom:50px;
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        .sidebar ul{
-            list-style:none;
-        }
+    body {
+      min-height: 100vh;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(15, 15, 16, 0.06), transparent 32%),
+        linear-gradient(180deg, #fbfbfc 0%, #f4f4f6 100%);
+      color: var(--black);
+    }
 
-        .sidebar li{
-            padding:14px 0;
-            cursor:pointer;
-            color:#ddd;
-        }
+    button,
+    input,
+    select {
+      font: inherit;
+    }
 
-        .sidebar li:hover{
-            color:#fff;
-        }
+    button {
+      cursor: pointer;
+    }
 
-        .main{
-            margin-left:260px;
-            padding:40px;
-        }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-        .topbar{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-bottom:35px;
-        }
+    .app-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr;
+    }
 
-        .topbar h1{
-            font-size:34px;
-        }
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      background: linear-gradient(180deg, var(--black) 0%, #181818 100%);
+      color: var(--white);
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
 
-        .cards{
-            display:grid;
-            grid-template-columns:repeat(4,1fr);
-            gap:20px;
-        }
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 8px 26px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 20px;
+    }
 
-        .card{
-            background:#fff;
-            border-radius:16px;
-            padding:25px;
-            box-shadow:0 10px 25px rgba(0,0,0,.08);
-        }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--white);
+      color: var(--black);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      letter-spacing: -1px;
+      box-shadow: inset 0 0 0 1px rgba(15, 15, 16, 0.08);
+    }
 
-        .card h3{
-            color:#777;
-            font-size:15px;
-            margin-bottom:10px;
-        }
+    .brand-title {
+      line-height: 1.1;
+    }
 
-        .card h2{
-            font-size:34px;
-        }
+    .brand-title strong {
+      display: block;
+      font-size: 17px;
+      letter-spacing: -0.3px;
+    }
 
-        .section{
-            margin-top:35px;
-            background:#fff;
-            border-radius:16px;
-            padding:30px;
-            box-shadow:0 10px 25px rgba(0,0,0,.08);
-        }
+    .brand-title span {
+      color: #bcbcc2;
+      font-size: 12px;
+    }
 
-        table{
-            width:100%;
-            border-collapse:collapse;
-            margin-top:20px;
-        }
+    .nav-section-label {
+      color: #85858d;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      padding: 16px 12px 8px;
+    }
 
-        th,td{
-            text-align:left;
-            padding:16px;
-            border-bottom:1px solid #eee;
-        }
+    .nav-list {
+      list-style: none;
+      display: grid;
+      gap: 4px;
+    }
 
-        th{
-            background:#fafafa;
-        }
-    </style>
+    .nav-item {
+      border-radius: 14px;
+    }
 
+    .nav-link {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      color: #d7d7dc;
+      border-radius: 14px;
+      transition: 0.18s ease;
+      font-weight: 650;
+      font-size: 14px;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--white);
+    }
+
+    .nav-link.active {
+      background: var(--white);
+      color: var(--black);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.20);
+    }
+
+    .nav-icon {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .sidebar-footer strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-footer p {
+      color: #c7c7cd;
+      font-size: 12px;
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+
+    .small-dark-btn {
+      width: 100%;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.10);
+      color: var(--white);
+      border-radius: 11px;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .main-area {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      height: var(--topbar-height);
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(18px);
+      border-bottom: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 34px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .mobile-menu {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: var(--border);
+      background: var(--white);
+      color: var(--black);
+      font-size: 20px;
+    }
+
+    .global-search {
+      width: min(470px, 40vw);
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: var(--border);
+      border-radius: 999px;
+      background: var(--white);
+      padding: 0 16px;
+      color: var(--gray-600);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .global-search input {
+      border: 0;
+      outline: 0;
+      flex: 1;
+      background: transparent;
+      color: var(--black);
+      min-width: 0;
+    }
+
+    .global-search span {
+      font-size: 14px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: var(--border);
+      background: var(--white);
+      color: var(--black);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+
+    .notification-dot {
+      position: absolute;
+      top: 9px;
+      right: 10px;
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+      background: var(--danger);
+      border: 2px solid var(--white);
+    }
+
+    .user-chip {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--white);
+      border: var(--border);
+      border-radius: 999px;
+      padding: 5px 12px 5px 5px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--black);
+      color: var(--white);
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .user-chip-text {
+      display: grid;
+      line-height: 1.15;
+    }
+
+    .user-chip-text strong {
+      font-size: 13px;
+    }
+
+    .user-chip-text span {
+      font-size: 11px;
+      color: var(--gray-600);
+    }
+
+    .page-content {
+      padding: 34px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .hero-panel {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(248, 248, 250, 0.96)),
+        radial-gradient(circle at top right, rgba(15, 15, 16, 0.08), transparent 26%);
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 24px;
+      align-items: stretch;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+      min-width: 0;
+    }
+
+    .breadcrumb {
+      color: var(--gray-600);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(30px, 4vw, 52px);
+      letter-spacing: -2.2px;
+      line-height: 0.98;
+      margin-bottom: 16px;
+      max-width: 780px;
+    }
+
+    .hero-copy p {
+      color: var(--gray-700);
+      line-height: 1.65;
+      max-width: 740px;
+      font-size: 15px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .ghost-btn {
+      min-height: 44px;
+      border-radius: 14px;
+      padding: 0 18px;
+      font-weight: 850;
+      border: 0;
+    }
+
+    .primary-btn {
+      background: var(--black);
+      color: var(--white);
+      box-shadow: 0 12px 28px rgba(15, 15, 16, 0.18);
+    }
+
+    .secondary-btn {
+      background: var(--white);
+      color: var(--black);
+      border: var(--border);
+    }
+
+    .ghost-btn {
+      background: var(--gray-100);
+      color: var(--gray-800);
+      border: var(--border);
+    }
+
+    .hero-side {
+      background: var(--black);
+      color: var(--white);
+      border-radius: 22px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 28px;
+      min-height: 280px;
+    }
+
+    .hero-side-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 12px;
+    }
+
+    .hero-side h3 {
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .hero-side p {
+      color: #cfcfd5;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .live-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 0 6px rgba(22, 128, 60, 0.20);
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .mini-stat {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .mini-stat span {
+      display: block;
+      color: #c5c5ca;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      margin-bottom: 8px;
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 24px;
+      letter-spacing: -0.8px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .kpi-card {
+      background: var(--white);
+      border: var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .kpi-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .kpi-label {
+      color: var(--gray-600);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .kpi-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--gray-100);
+      color: var(--black);
+      border: var(--border);
+    }
+
+    .kpi-value {
+      font-size: 34px;
+      letter-spacing: -1.4px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .kpi-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--gray-600);
+      font-size: 13px;
+    }
+
+    .trend {
+      font-weight: 900;
+      color: var(--success);
+    }
+
+    .trend.neutral {
+      color: var(--gray-700);
+    }
+
+    .trend.warning {
+      color: var(--warning);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(340px, 0.85fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .stack {
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .panel {
+      background: var(--white);
+      border: var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 20px 22px;
+      border-bottom: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .panel-title {
+      min-width: 0;
+    }
+
+    .panel-title h2 {
+      font-size: 18px;
+      letter-spacing: -0.4px;
+      margin-bottom: 4px;
+    }
+
+    .panel-title p {
+      color: var(--gray-600);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .panel-body {
+      padding: 20px 22px 22px;
+    }
+
+    .pipeline-wrapper {
+      display: grid;
+      gap: 16px;
+    }
+
+    .pipeline-bars {
+      display: grid;
+      gap: 12px;
+    }
+
+    .pipeline-row {
+      display: grid;
+      grid-template-columns: 110px 1fr 44px;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pipeline-row span {
+      color: var(--gray-700);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .bar-track {
+      height: 10px;
+      border-radius: 999px;
+      background: var(--gray-200);
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--black);
+    }
+
+    .job-table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th,
+    td {
+      padding: 15px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-200);
+      vertical-align: middle;
+      font-size: 13px;
+    }
+
+    th {
+      color: var(--gray-600);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      background: #fbfbfc;
+      font-weight: 900;
+    }
+
+    td strong {
+      display: block;
+      font-size: 13px;
+      color: var(--black);
+      margin-bottom: 3px;
+    }
+
+    td small {
+      color: var(--gray-600);
+      font-size: 12px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 850;
+      background: var(--gray-100);
+      color: var(--gray-800);
+      border: 1px solid var(--gray-200);
+      white-space: nowrap;
+    }
+
+    .status-pill.success {
+      color: var(--success);
+      background: rgba(22, 128, 60, 0.08);
+      border-color: rgba(22, 128, 60, 0.18);
+    }
+
+    .status-pill.warning {
+      color: var(--warning);
+      background: rgba(168, 116, 0, 0.08);
+      border-color: rgba(168, 116, 0, 0.18);
+    }
+
+    .status-pill.danger {
+      color: var(--danger);
+      background: rgba(180, 35, 24, 0.08);
+      border-color: rgba(180, 35, 24, 0.18);
+    }
+
+    .needed-box {
+      display: inline-flex;
+      gap: 6px;
+      align-items: baseline;
+      color: var(--gray-700);
+      font-weight: 800;
+    }
+
+    .needed-box b {
+      color: var(--black);
+      font-size: 16px;
+    }
+
+    .activity-list,
+    .interview-list,
+    .task-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .activity-item {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .activity-item:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .activity-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: var(--gray-100);
+      border: var(--border);
+      display: grid;
+      place-items: center;
+      color: var(--black);
+      font-size: 14px;
+    }
+
+    .activity-text strong {
+      font-size: 13px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .activity-text p {
+      color: var(--gray-600);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .activity-text time {
+      display: block;
+      margin-top: 6px;
+      color: var(--gray-500);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .interview-card {
+      padding: 14px;
+      border: var(--border);
+      border-radius: 16px;
+      display: grid;
+      gap: 9px;
+      background: #fbfbfc;
+    }
+
+    .interview-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .interview-top strong {
+      font-size: 13px;
+    }
+
+    .interview-card p {
+      color: var(--gray-600);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .task-item {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 12px;
+      border: var(--border);
+      border-radius: 14px;
+      background: var(--white);
+    }
+
+    .task-checkbox {
+      margin-top: 2px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--black);
+    }
+
+    .task-item strong {
+      font-size: 13px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .task-item p {
+      font-size: 12px;
+      color: var(--gray-600);
+      line-height: 1.45;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .quick-card {
+      min-height: 112px;
+      border-radius: 18px;
+      border: var(--border);
+      background: var(--white);
+      box-shadow: var(--shadow-sm);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: 0.18s ease;
+    }
+
+    .quick-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .quick-card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--gray-100);
+      border: var(--border);
+    }
+
+    .quick-card strong {
+      font-size: 14px;
+      letter-spacing: -0.2px;
+    }
+
+    .footer-space {
+      height: 18px;
+    }
+
+    @media (max-width: 1240px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+
+      .topbar {
+        padding: 0 18px;
+      }
+
+      .global-search {
+        width: min(420px, 48vw);
+      }
+
+      .page-content {
+        padding: 22px;
+      }
+
+      .hero-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .topbar {
+        height: auto;
+        padding: 14px;
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .topbar-left,
+      .topbar-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .global-search {
+        flex: 1;
+        width: auto;
+      }
+
+      .user-chip-text {
+        display: none;
+      }
+
+      .page-content {
+        padding: 16px;
+      }
+
+      .kpi-grid,
+      .quick-actions,
+      .mini-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-panel,
+      .panel {
+        border-radius: 18px;
+      }
+
+      .hero-copy h1 {
+        font-size: 34px;
+        letter-spacing: -1.2px;
+      }
+
+      .pipeline-row {
+        grid-template-columns: 88px 1fr 34px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-row">
+        <div class="brand-mark">TA</div>
+        <div class="brand-title">
+          <strong>Test ATS</strong>
+          <span>Staffing Command Center</span>
+        </div>
+      </div>
 
-<div class="sidebar">
+      <div class="nav-section-label">Workspace</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a class="nav-link active" href="dashboard.html"><span class="nav-icon">▦</span>Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="companies.html"><span class="nav-icon">□</span>Companies</a></li>
+        <li class="nav-item"><a class="nav-link" href="job-orders.html"><span class="nav-icon">≡</span>Job Orders</a></li>
+        <li class="nav-item"><a class="nav-link" href="candidates.html"><span class="nav-icon">◎</span>Candidates</a></li>
+        <li class="nav-item"><a class="nav-link" href="pipeline.html"><span class="nav-icon">⋮</span>Pipeline</a></li>
+        <li class="nav-item"><a class="nav-link" href="calendar.html"><span class="nav-icon">◷</span>Calendar</a></li>
+      </ul>
 
-<div class="logo">Test ATS</div>
+      <div class="nav-section-label">Operations</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a class="nav-link" href="communications.html"><span class="nav-icon">✉</span>Communications</a></li>
+        <li class="nav-item"><a class="nav-link" href="reports.html"><span class="nav-icon">↗</span>Reports</a></li>
+        <li class="nav-item"><a class="nav-link" href="administration.html"><span class="nav-icon">⚙</span>Administration</a></li>
+      </ul>
 
-<ul>
-<li>Dashboard</li>
-<li>Companies</li>
-<li>Job Orders</li>
-<li>Candidates</li>
-<li>Pipeline</li>
-<li>Calendar</li>
-<li>Communications</li>
-<li>Reports</li>
-<li>Administration</li>
-<li>Settings</li>
-</ul>
+      <div class="sidebar-footer">
+        <strong>System Status</strong>
+        <p>Database connected. Dashboard shell ready for Supabase data wiring.</p>
+        <button class="small-dark-btn" type="button">View Setup</button>
+      </div>
+    </aside>
 
-</div>
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu" type="button">☰</button>
+          <label class="global-search">
+            <span>⌕</span>
+            <input type="search" placeholder="Search candidates, companies, jobs..." />
+          </label>
+        </div>
 
-<div class="main">
+        <div class="topbar-actions">
+          <button class="icon-btn" type="button" aria-label="Notifications">
+            ◌
+            <span class="notification-dot"></span>
+          </button>
+          <button class="icon-btn" type="button" aria-label="Settings">⚙</button>
+          <div class="user-chip">
+            <div class="avatar">AD</div>
+            <div class="user-chip-text">
+              <strong>Admin</strong>
+              <span>Owner Access</span>
+            </div>
+          </div>
+        </div>
+      </header>
 
-<div class="topbar">
+      <section class="page-content">
+        <section class="hero-panel">
+          <div class="hero-copy">
+            <div>
+              <div class="breadcrumb">Dashboard / Recruiting Overview</div>
+              <h1>Recruiting operations, pipeline, and placements in one view.</h1>
+              <p>
+                Track active job orders, remaining openings, candidate movement, interviews,
+                recruiter tasks, and client activity from one professional staffing dashboard.
+              </p>
+            </div>
 
-<h1>Dashboard</h1>
+            <div class="hero-actions">
+              <button class="primary-btn" type="button">+ New Job Order</button>
+              <button class="secondary-btn" type="button">+ Add Candidate</button>
+              <button class="ghost-btn" type="button">View Pipeline</button>
+            </div>
+          </div>
 
-<div>
-Welcome
-</div>
+          <aside class="hero-side">
+            <div class="hero-side-top">
+              <div>
+                <h3>Live ATS Snapshot</h3>
+                <p>Counts will populate from Supabase once the dashboard data layer is connected.</p>
+              </div>
+              <span class="live-chip"><span class="pulse-dot"></span>Live</span>
+            </div>
 
-</div>
+            <div class="mini-stats">
+              <div class="mini-stat">
+                <span>Open Need</span>
+                <strong>0</strong>
+              </div>
+              <div class="mini-stat">
+                <span>Placed</span>
+                <strong>0</strong>
+              </div>
+              <div class="mini-stat">
+                <span>Interviews</span>
+                <strong>0</strong>
+              </div>
+              <div class="mini-stat">
+                <span>At Risk</span>
+                <strong>0</strong>
+              </div>
+            </div>
+          </aside>
+        </section>
 
-<div class="cards">
+        <section class="kpi-grid">
+          <article class="kpi-card">
+            <div class="kpi-top">
+              <span class="kpi-label">Active Job Orders</span>
+              <span class="kpi-icon">≡</span>
+            </div>
+            <div class="kpi-value" id="activeJobsCount">0</div>
+            <div class="kpi-meta"><span>Open client requests</span><span class="trend neutral">Ready</span></div>
+          </article>
 
-<div class="card">
-<h3>Open Job Orders</h3>
-<h2>0</h2>
-</div>
+          <article class="kpi-card">
+            <div class="kpi-top">
+              <span class="kpi-label">Candidates</span>
+              <span class="kpi-icon">◎</span>
+            </div>
+            <div class="kpi-value" id="candidateCount">0</div>
+            <div class="kpi-meta"><span>Total talent records</span><span class="trend neutral">Ready</span></div>
+          </article>
 
-<div class="card">
-<h3>Candidates</h3>
-<h2>0</h2>
-</div>
+          <article class="kpi-card">
+            <div class="kpi-top">
+              <span class="kpi-label">Remaining Openings</span>
+              <span class="kpi-icon">□</span>
+            </div>
+            <div class="kpi-value" id="remainingOpeningsCount">0</div>
+            <div class="kpi-meta"><span>Needed after placements</span><span class="trend warning">Watch</span></div>
+          </article>
 
-<div class="card">
-<h3>Placements</h3>
-<h2>0</h2>
-</div>
+          <article class="kpi-card">
+            <div class="kpi-top">
+              <span class="kpi-label">Placements</span>
+              <span class="kpi-icon">✓</span>
+            </div>
+            <div class="kpi-value" id="placementsCount">0</div>
+            <div class="kpi-meta"><span>This month</span><span class="trend">Live</span></div>
+          </article>
+        </section>
 
-<div class="card">
-<h3>Companies</h3>
-<h2>0</h2>
-</div>
+        <section class="quick-actions">
+          <a class="quick-card" href="companies.html">
+            <span class="quick-card-icon">□</span>
+            <strong>Create Company</strong>
+          </a>
+          <a class="quick-card" href="job-orders.html">
+            <span class="quick-card-icon">≡</span>
+            <strong>Create Job Order</strong>
+          </a>
+          <a class="quick-card" href="candidates.html">
+            <span class="quick-card-icon">◎</span>
+            <strong>Add Candidate</strong>
+          </a>
+          <a class="quick-card" href="pipeline.html">
+            <span class="quick-card-icon">⋮</span>
+            <strong>Open Pipeline</strong>
+          </a>
+        </section>
 
-</div>
+        <section class="dashboard-grid">
+          <div class="stack">
+            <article class="panel">
+              <div class="panel-header">
+                <div class="panel-title">
+                  <h2>Active Job Orders</h2>
+                  <p>Live view of open orders, fill progress, and remaining need.</p>
+                </div>
+                <button class="secondary-btn" type="button">View All</button>
+              </div>
 
-<div class="section">
+              <div class="job-table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Company</th>
+                      <th>Job Order</th>
+                      <th>Status</th>
+                      <th>Pipeline</th>
+                      <th>Need</th>
+                      <th>Recruiter</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>No company yet</strong><small>Add a company to begin.</small></td>
+                      <td><strong>No job orders</strong><small>Create the first job order.</small></td>
+                      <td><span class="status-pill">Not Started</span></td>
+                      <td><small>0 candidates</small></td>
+                      <td><span class="needed-box"><b>0</b> remaining</span></td>
+                      <td><small>Unassigned</small></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
 
-<h2>Recent Job Orders</h2>
+            <article class="panel">
+              <div class="panel-header">
+                <div class="panel-title">
+                  <h2>Pipeline Overview</h2>
+                  <p>Candidate movement across recruiting stages.</p>
+                </div>
+                <button class="secondary-btn" type="button">Open Board</button>
+              </div>
 
-<table>
+              <div class="panel-body">
+                <div class="pipeline-wrapper">
+                  <div class="pipeline-bars">
+                    <div class="pipeline-row">
+                      <span>New</span>
+                      <div class="bar-track"><div class="bar-fill" style="width: 4%;"></div></div>
+                      <span>0</span>
+                    </div>
+                    <div class="pipeline-row">
+                      <span>Screened</span>
+                      <div class="bar-track"><div class="bar-fill" style="width: 4%;"></div></div>
+                      <span>0</span>
+                    </div>
+                    <div class="pipeline-row">
+                      <span>Submitted</span>
+                      <div class="bar-track"><div class="bar-fill" style="width: 4%;"></div></div>
+                      <span>0</span>
+                    </div>
+                    <div class="pipeline-row">
+                      <span>Interview</span>
+                      <div class="bar-track"><div class="bar-fill" style="width: 4%;"></div></div>
+                      <span>0</span>
+                    </div>
+                    <div class="pipeline-row">
+                      <span>Offer</span>
+                      <div class="bar-track"><div class="bar-fill" style="width: 4%;"></div></div>
+                      <span>0</span>
+                    </div>
+                    <div class="pipeline-row">
+                      <span>Placed</span>
+                      <div class="bar-track"><div class="bar-fill" style="width: 4%;"></div></div>
+                      <span>0</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
 
-<tr>
-<th>Company</th>
-<th>Job</th>
-<th>Status</th>
-<th>Needed</th>
-</tr>
+          <aside class="stack">
+            <article class="panel">
+              <div class="panel-header">
+                <div class="panel-title">
+                  <h2>Today’s Recruiting</h2>
+                  <p>Interviews, starts, and follow-ups.</p>
+                </div>
+              </div>
 
-<tr>
-<td colspan="4" style="text-align:center;padding:60px;color:#777;">
-No Job Orders Yet
-</td>
-</tr>
+              <div class="panel-body">
+                <div class="interview-list">
+                  <div class="interview-card">
+                    <div class="interview-top">
+                      <strong>No interviews scheduled</strong>
+                      <span class="status-pill">Today</span>
+                    </div>
+                    <p>Scheduled interviews will appear here once interview records are added.</p>
+                  </div>
 
-</table>
+                  <div class="interview-card">
+                    <div class="interview-top">
+                      <strong>No starts scheduled</strong>
+                      <span class="status-pill success">Starts</span>
+                    </div>
+                    <p>Candidate start dates will appear here after placements are created.</p>
+                  </div>
+                </div>
+              </div>
+            </article>
 
-</div>
+            <article class="panel">
+              <div class="panel-header">
+                <div class="panel-title">
+                  <h2>Recruiter Tasks</h2>
+                  <p>Work that needs attention.</p>
+                </div>
+              </div>
 
-</div>
+              <div class="panel-body">
+                <div class="task-list">
+                  <label class="task-item">
+                    <input class="task-checkbox" type="checkbox" />
+                    <span>
+                      <strong>Create first company profile</strong>
+                      <p>Company CRM records feed job orders, contacts, and reports.</p>
+                    </span>
+                  </label>
 
+                  <label class="task-item">
+                    <input class="task-checkbox" type="checkbox" />
+                    <span>
+                      <strong>Create first job order</strong>
+                      <p>Openings, fill counts, pipeline, and placements connect from here.</p>
+                    </span>
+                  </label>
+
+                  <label class="task-item">
+                    <input class="task-checkbox" type="checkbox" />
+                    <span>
+                      <strong>Add candidate records</strong>
+                      <p>Candidate profiles will connect to job orders through pipeline matches.</p>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <div class="panel-title">
+                  <h2>Recent Activity</h2>
+                  <p>System-wide recruiting timeline.</p>
+                </div>
+              </div>
+
+              <div class="panel-body">
+                <div class="activity-list">
+                  <div class="activity-item">
+                    <div class="activity-dot">✓</div>
+                    <div class="activity-text">
+                      <strong>Dashboard created</strong>
+                      <p>The ATS dashboard UI is ready for Supabase data wiring.</p>
+                      <time>Now</time>
+                    </div>
+                  </div>
+
+                  <div class="activity-item">
+                    <div class="activity-dot">□</div>
+                    <div class="activity-text">
+                      <strong>Company module next</strong>
+                      <p>Companies will connect to contacts, job orders, notes, documents, and placements.</p>
+                      <time>Next step</time>
+                    </div>
+                  </div>
+
+                  <div class="activity-item">
+                    <div class="activity-dot">◎</div>
+                    <div class="activity-text">
+                      <strong>Candidate pipeline planned</strong>
+                      <p>Candidate movement will update dashboards, job orders, companies, and reports.</p>
+                      <time>Planned</time>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </aside>
+        </section>
+
+        <div class="footer-space"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const mobileMenuButton = document.querySelector(".mobile-menu");
+
+    if (mobileMenuButton) {
+      mobileMenuButton.addEventListener("click", function () {
+        alert("Mobile sidebar menu will be connected after the main pages are created.");
+      });
+    }
+  </script>
 </body>
 </html>
