@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test ATS | Login</title>
+  <link rel="stylesheet" href="css/login.css" />
+</head>
+
+<body>
+  <main class="login-page">
+    <section class="login-left">
+      <div class="brand">Test ATS</div>
+
+      <div class="hero-copy">
+        <p class="eyebrow">Staffing CRM + ATS</p>
+        <h1>Recruit smarter. Place faster.</h1>
+        <p>
+          Manage companies, job orders, candidates, interviews, placements,
+          emails, and recruiter activity from one system.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <div>Resume Parsing</div>
+        <div>Candidate Pipeline</div>
+        <div>Company CRM</div>
+        <div>Recruiter Reports</div>
+      </div>
+    </section>
+
+    <section class="login-right">
+      <form id="loginForm" class="login-card">
+        <h2>Welcome back</h2>
+        <p class="form-subtitle">Sign in to continue to your ATS dashboard.</p>
+
+        <label for="email">Email address</label>
+        <input id="email" type="email" autocomplete="email" required />
+
+        <label for="password">Password</label>
+        <div class="password-wrap">
+          <input id="password" type="password" autocomplete="current-password" required />
+          <button type="button" id="togglePassword">Show</button>
+        </div>
+
+        <div class="form-row">
+          <label class="checkbox-label">
+            <input id="rememberMe" type="checkbox" />
+            Remember me
+          </label>
+
+          <button type="button" id="forgotPassword" class="link-button">
+            Forgot password?
+          </button>
+        </div>
+
+        <button type="submit" id="loginButton" class="primary-button">
+          Sign In
+        </button>
+
+        <p id="loginMessage" class="message"></p>
+
+        <div class="request-demo">
+          Need access? Contact your ATS administrator.
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>
